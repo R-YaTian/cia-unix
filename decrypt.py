@@ -474,31 +474,31 @@ def dumpSection(f, fh, offset, size, t, ctr, usesExtraCrypto, fixedCrypto, encry
         if sizeleft > 0:
             f.write(cipher.decrypt(fh.read(sizeleft)))
 
+if __name__ == "__main__" or __name__ == "decrypt":
+    if len(sys.argv) < 2:
+        print("usage: decrypt *filepath*")
+        sys.exit()
 
-if len(sys.argv) < 2:
-    print("usage: decrypt.py *file*")
-    sys.exit()
+    if os.path.exists(sys.argv[1]):
+        file = sys.argv[1] 
+        with open(file, "rb") as (fh):
+            fh.seek(256)
+            magic = fh.read(4)
 
-if os.path.exists(sys.argv[1]):
-    file = sys.argv[1] 
-    with open(file, "rb") as (fh):
-        fh.seek(256)
-        magic = fh.read(4)
-
-        if magic == b"NCSD":
-            result = parseNCSD(fh)
-            print("")
-        elif magic == b"NCCH":
-            fh.seek(0, 2)
-            result = parseNCCH(fh, fh.tell())
-            print("")
-        elif fh.name.lower().endswith(".cia"):
-            fh.seek(0)
-            if fh.read(4) == b"  \x00\x00":
-                parseCIA(fh)
+            if magic == b"NCSD":
+                result = parseNCSD(fh)
                 print("")
-else:
-    print("Input file does not exist")
-    sys.exit()
+            elif magic == b"NCCH":
+                fh.seek(0, 2)
+                result = parseNCCH(fh, fh.tell())
+                print("")
+            elif fh.name.lower().endswith(".cia"):
+                fh.seek(0)
+                if fh.read(4) == b"  \x00\x00":
+                    parseCIA(fh)
+                    print("")
+    else:
+        print("Input file does not exist")
+        sys.exit()
 
-print("Partitions extracted")
+    print("Partitions extracted")
