@@ -486,7 +486,7 @@ def dumpSection(f, fh, offset, size, t, ctr, usesExtraCrypto, fixedCrypto, encry
 
 if __name__ == "__main__" or __name__ == "decrypt":
     if len(sys.argv) < 2:
-        print("usage: decrypt.py *filepath*")
+        print("usage: decrypt *filepath*")
         sys.exit()
 
     if os.path.exists(sys.argv[1]):
